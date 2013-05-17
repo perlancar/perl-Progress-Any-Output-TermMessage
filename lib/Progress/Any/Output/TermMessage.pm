@@ -25,6 +25,8 @@ sub update {
 1;
 # ABSTRACT: Output progress to terminal as simple message
 
+=for Pod::Coverage ^(update)$
+
 =head1 SYNOPSIS
 
  use Progress::Any::Output;
