@@ -7,9 +7,15 @@ use warnings;
 # VERSION
 
 sub new {
-    my ($class, %args) = @_;
+    my ($class, %args0) = @_;
 
-    $args{template} //= "(%c/%C) %m";
+    my %args;
+
+    $args{template}          = delete($args0{template}) // "(%c/%C) %m";
+    $args{single_line_task}  = delete($args0{single_line_task}) // 0;
+
+    keys(%args0) and die "Unknown output parameter(s): ".
+        join(", ", keys(%args0));
 
     bless \%args, $class;
 }
@@ -17,9 +23,29 @@ sub new {
 sub update {
     my ($self, %args) = @_;
 
-    my $s = $args{indicator}->fill_template($self->{template}, %args);
-    $s .= "\n" unless $s =~ /\n\z/;
+    my $p = $args{indicator};
+
+    my $s = $p->fill_template($self->{template}, %args);
+    $s =~ s/\r?\n//g;
+
+    if ($self->{single_line_task}) {
+        if (defined($self->{prev_task}) && $self->{prev_task} ne $p->{task} ||
+            $p->{finished}) {
+            print "\n";
+        } elsif (defined $self->{prev_task}) {
+            print "\b" x length($self->{prev_str});
+        }
+    }
     print $s;
+    print "\n" if !$self->{single_line_task} || $p->{finished};
+
+    if ($p->{finished}) {
+        undef $self->{prev_task};
+        undef $self->{prev_str};
+    } else {
+        $self->{prev_task} = $p->{task};
+        $self->{prev_str}  = $s;
+    }
 }
 
 1;
@@ -49,10 +75,38 @@ Known arguments:
 
 =over
 
-=item * template => STR (default: '(%c/%C) %m')
+=item * template => STR (default: '(%P/%T) %m')
 
 Will be used to do C<< $progress->fill_template() >>. See L<Progress::Any> for
 supported template strings.
+
+=item * single_line_task => BOOL (default: 0)
+
+If set to true, will reuse line using a series of C<\b> to get back to the
+original position, as long as the previous update is for the same task and the
+C<finished> attribute is false. For example:
+
+ use Progress::Any;
+ use Progress::Any::Output;
+
+ Progress::Any::Output->set("TermMessage",
+     single_line_task=>0, template=>"%t %m");
+ my $progress = Progress::Any->get_indicator(
+     task => 'copy', title => 'Copying file ... ');
+ $progress->update(message=>'file1.txt');
+ $progress->update(message=>'file2.txt');
+ $progress->update(message=>'file3.txt');
+ $progress->finish(message=>'success');
+
+will result in:
+
+ Copying file ... file1.txt_
+ Copying file ... file2.txt_
+ Copying file ... file3.txt_
+ Copying file ... success
+ _
+
+all in one line.
 
 =back
 
