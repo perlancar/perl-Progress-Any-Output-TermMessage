@@ -56,7 +56,7 @@ sub update {
 =head1 SYNOPSIS
 
  use Progress::Any::Output;
- Progress::Any::Output->set('TermMessage', template=>"[%t] (%c/%C) %m");
+ Progress::Any::Output->set('TermMessage', template=>"[%n] (%P/%T) %m");
 
 
 =head1 DESCRIPTION
