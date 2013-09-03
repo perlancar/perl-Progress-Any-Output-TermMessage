@@ -11,7 +11,7 @@ sub new {
 
     my %args;
 
-    $args{template}          = delete($args0{template}) // "(%c/%C) %m";
+    $args{template}          = delete($args0{template}) // "(%P/%T) %m";
     $args{single_line_task}  = delete($args0{single_line_task}) // 0;
 
     keys(%args0) and die "Unknown output parameter(s): ".
