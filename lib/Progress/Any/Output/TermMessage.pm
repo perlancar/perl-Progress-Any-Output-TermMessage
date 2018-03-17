@@ -1,10 +1,18 @@
 package Progress::Any::Output::TermMessage;
 
+# DATE
+# VERSION
+
 use 5.010001;
 use strict;
 use warnings;
 
-# VERSION
+sub output_data {
+    +{
+        # do not throttle the frequency of update to this output
+        freq => 0,
+    };
+}
 
 sub new {
     my ($class, %args0) = @_;
