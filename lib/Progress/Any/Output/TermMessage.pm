@@ -59,7 +59,7 @@ sub update {
 1;
 # ABSTRACT: Output progress to terminal as simple message
 
-=for Pod::Coverage ^(update)$
+=for Pod::Coverage ^(update|output_data)$
 
 =head1 SYNOPSIS
 
