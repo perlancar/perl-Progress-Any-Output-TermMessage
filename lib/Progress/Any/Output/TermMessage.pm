@@ -7,13 +7,6 @@ use 5.010001;
 use strict;
 use warnings;
 
-sub output_data {
-    +{
-        # do not throttle the frequency of update to this output
-        freq => 0,
-    };
-}
-
 sub new {
     my ($class, %args0) = @_;
 
@@ -21,6 +14,8 @@ sub new {
 
     $args{fh} = delete($args0{fh});
     $args{fh} //= \*STDERR;
+
+    $args{freq} = delete($args0{freq}) // 0;
 
     $args{template}          = delete($args0{template}) // "(%P/%T) %m";
     $args{single_line_task}  = delete($args0{single_line_task}) // 0;
@@ -64,7 +59,7 @@ sub update {
 1;
 # ABSTRACT: Output progress to terminal as simple message
 
-=for Pod::Coverage ^(update|output_data)$
+=for Pod::Coverage ^(update)$
 
 =head1 SYNOPSIS
 
