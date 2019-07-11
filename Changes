@@ -1,9 +1,9 @@
-0.041   2018-03-26 (PERLANCAR)
+0.041   2018-03-26  Released-By: PERLANCAR
 
 	- Update to Progress::Any 0.214.
 
 
-0.040   2018-03-21 (PERLANCAR)
+0.040   2018-03-21  Released-By: PERLANCAR
 
         - [Incompatible change] By default send output to STDERR instead of
 	  STDOUT, like logging.
@@ -11,18 +11,18 @@
 	- Add option: fh to allow customizing where to print progress message.
 
 
-0.03    2018-03-17 (PERLANCAR)
+0.03    2018-03-17  Released-By: PERLANCAR
 
 	- Prevent frequency throttling by Progress::Any.
 
 
-0.02    2013-09-03 (SHARYANTO)
+0.02    2013-09-03  Released-By: SHARYANTO
 
         - Add option: single_line_task.
 
         - Update to Progress::Any 0.10.
 
 
-0.01    2013-05-17 (SHARYANTO)
+0.01    2013-05-17  Released-By: SHARYANTO
 
         - First release.
